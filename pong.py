@@ -13,8 +13,6 @@ class Ball(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.screen = pygame.display.get_surface()
         self.area = self.screen.get_rect()
-        # self.x = 0
-        # self.y = 0
         self.vector = (0.0, 0)
         self.hit = 0
         self.reset()
@@ -22,7 +20,10 @@ class Ball(pygame.sprite.Sprite):
     def reset(self):
         self.rect.x = random.randrange(200, 600)
         self.rect.y = random.randrange(200, 400)
-        self.vector = (math.radians(random.randrange(-45, 45)), 5)
+        init_angle = random.randrange(30, 45)
+        if random.randrange(2) == 0:
+            init_angle = -init_angle
+        self.vector = (init_angle, 5)
         if random.randrange(2) == 0:
             (angle, v) = self.vector
             angle += 180
@@ -44,21 +45,29 @@ class Ball(pygame.sprite.Sprite):
             br = not self.area.collidepoint(newpos.bottomright)
             if (tr and tl) or (br and bl):
                 angle = -angle
+                if v < 10:
+                    v *= 1.02
             if tl and bl:
                 angle = math.pi - angle
                 player2.score += 1
+                v = 5
                 self.reset()
             if tr and br:
                 angle = math.pi - angle
                 player1.score += 1
+                v = 5
                 self.reset()
         else:
             player1.rect.inflate(-3, -3)
             player2.rect.inflate(-3, -3)
             if self.rect.colliderect(player1.rect) == 1 and not self.hit:
                 angle = math.pi - angle
+                if v < player1.speed:
+                    v *= 1.05
                 self.hit = not self.hit
             elif self.rect.colliderect(player2.rect) == 1 and not self.hit:
+                if v < player2.speed:
+                    v *= 1.08
                 angle = math.pi - angle
                 self.hit = not self.hit
             elif self.hit:

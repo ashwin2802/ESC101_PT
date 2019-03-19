@@ -4,7 +4,7 @@ import pygame
 
 
 def spacedown(event):
-    players.main()
+    players.menu.play()
 
 
 def main():
@@ -25,6 +25,8 @@ def main():
     background.add_reaction(space)
     menu = thorpy.Menu(background)
     menu.play()
+    background.blit()
+    background.update()
     application.quit()
 
 

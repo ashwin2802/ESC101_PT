@@ -1,5 +1,5 @@
 import humans
-import ai
+import diff
 import thorpy
 import pygame
 
@@ -9,7 +9,7 @@ def player():
 
 
 def computer():
-    ai.main()
+    diff.menu.play()
 
 
 application = thorpy.Application((800, 600), "Players")

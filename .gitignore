@@ -3,3 +3,5 @@ IMG*
 
 .vscode/
 Tutorials/
+build/
+__pycache__/

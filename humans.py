@@ -1,11 +1,24 @@
 import pygame
-import players
-#import over
+import players as p
+import thorpy
 import pong
 
 
-def _quit():
-    players.menu.play()
+def buttons(screen):
+    again = thorpy.make_button("Play Again", func=more)
+    leave = thorpy.make_button("Exit", func=thorpy.functions.quit_func)
+    again.surface = screen
+    leave.surface = screen
+    box = thorpy.Box.make([again, leave])
+    box.fit_children((30, 30))
+    box.center()
+    box.set_main_color((0, 0, 0, 0))
+    menu = thorpy.Menu(box)
+    menu.play()
+
+
+def more():
+    p.menu.play()
 
 
 def main():
@@ -30,11 +43,16 @@ def main():
     game_over = False
 
     while 1:
+        # fix intialized angle of the ball
+        # add function to change the angle of the ball on reflection
+        # this was probably the diff function
         clock.tick(60)
         screen.fill((0, 0, 0))
+        #  fix ball movement when the button is held for a long time
+        pygame.key.set_repeat(100, 100)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                _quit()
+                return
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:
                     player1.moveup()
@@ -55,12 +73,17 @@ def main():
             game_over = True
 
         if game_over:
-            ball.vector = (0.0, 0)
             text = font.render("Game Over", 1, (200, 200, 200))
             textpos = text.get_rect(centerx=background.get_width()/2)
             textpos.top = 50
             screen.blit(text, textpos)
-            over.main()
+            win_mess = "Player 1 wins!" if (
+                player1.score > player2.score) else "Player 2 wins!"
+            win_text = font.render(win_mess, 1, (200, 200, 200))
+            winpos = win_text.get_rect(centerx=background.get_width()/2)
+            winpos.top = 150
+            screen.blit(win_text, winpos)
+            buttons(screen)
 
         scoreprint = "P1: " + str(player1.score)
         text = font.render(scoreprint, 1, (255, 255, 255))
@@ -75,8 +98,7 @@ def main():
         screen.blit(background, ball.rect, ball.rect)
         screen.blit(background, player1.rect, player1.rect)
         screen.blit(background, player2.rect, player2.rect)
-        ball.update(player1, player2
-                    )
+        ball.update(player1, player2)
         players.update()
         balls.draw(screen)
         players.draw(screen)

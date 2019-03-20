@@ -3,6 +3,19 @@ import random
 import pygame
 
 
+def debug(var):
+    with open("output.txt", "a") as f:
+        f.write(str(var))
+        f.write("\n")
+        f.close()
+    return
+
+
+def model_select(diff):
+    if(diff == "Effortless"):
+        model = ""
+
+
 class Ball(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -13,21 +26,28 @@ class Ball(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.screen = pygame.display.get_surface()
         self.area = self.screen.get_rect()
-        self.vector = (0.0, 0)
+        #self.vector = (0.0, 5)
         self.hit = 0
-        self.reset()
+        self.vector = self.reset()
 
     def reset(self):
-        self.rect.x = random.randrange(200, 600)
-        self.rect.y = random.randrange(200, 400)
-        init_angle = random.randrange(30, 45)
+        # self.vector = (0.0, 5)
+        # why block multiples of 11?
+        init_angle = random.randrange(-45, 45)
+        if(not (init_angle % 11)):
+            init_angle -= 1
         if random.randrange(2) == 0:
             init_angle = -init_angle
-        self.vector = (init_angle, 5)
         if random.randrange(2) == 0:
-            (angle, v) = self.vector
-            angle += 180
-            self.vector = (angle, v)
+            init_angle += 180
+            if(not (init_angle % 11)):
+                init_angle += 1
+        self.rect.x = random.randrange(200, 600)
+        self.rect.y = random.randrange(200, 400)
+        return (init_angle, 5)
+        # debug(self.vector[1])
+        # debug("\n")
+        #self.vector = (34.0, 5)
 
     def calcnewpos(self, rect, vector):
         (angle, v) = vector
@@ -37,42 +57,49 @@ class Ball(pygame.sprite.Sprite):
     def update(self, player1, player2):
         newpos = self.calcnewpos(self.rect, self.vector)
         self.rect = newpos
-        (angle, v) = self.vector
+        #(angle, v) = self.vector
         if not self.area.contains(newpos):
             tl = not self.area.collidepoint(newpos.topleft)
             tr = not self.area.collidepoint(newpos.topright)
             bl = not self.area.collidepoint(newpos.bottomleft)
             br = not self.area.collidepoint(newpos.bottomright)
             if (tr and tl) or (br and bl):
+                (angle, v) = self.vector
                 angle = -angle
                 if v < 10:
                     v *= 1.02
+                self.vector = (angle, v)
             if tl and bl:
-                angle = math.pi - angle
+                #angle = math.pi - angle
                 player2.score += 1
                 v = 5
-                self.reset()
+                # scope error here
+                self.vector = self.reset()
             if tr and br:
-                angle = math.pi - angle
+                #angle = math.pi - angle
                 player1.score += 1
                 v = 5
-                self.reset()
+                self.vector = self.reset()
         else:
-            player1.rect.inflate(-3, -3)
-            player2.rect.inflate(-3, -3)
+            #player1.rect.inflate(-3, -3)
+            #player2.rect.inflate(-3, -3)
             if self.rect.colliderect(player1.rect) == 1 and not self.hit:
+                (angle, v) = self.vector
                 angle = math.pi - angle
                 if v < player1.speed:
                     v *= 1.05
+                self.vector = (angle, v)
                 self.hit = not self.hit
             elif self.rect.colliderect(player2.rect) == 1 and not self.hit:
+                (angle, v) = self.vector
+                angle = math.pi - angle
                 if v < player2.speed:
                     v *= 1.08
-                angle = math.pi - angle
+                self.vector = (angle, v)
                 self.hit = not self.hit
             elif self.hit:
                 self.hit = not self.hit
-        self.vector = (angle, v)
+        #self.vector = (angle, v)
 
 
 class Pad(pygame.sprite.Sprite):
@@ -110,3 +137,9 @@ class Pad(pygame.sprite.Sprite):
     def movedown(self):
         self.movepos[1] += self.speed
         self.state = "movedown"
+
+
+class AI(Pad):
+    def __init__(self, diff):
+        super().__init__("right")
+        self.model = model_select(diff)

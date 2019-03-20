@@ -3,11 +3,13 @@ import comp
 
 
 def lvl1():
-    comp.main("Effortless")
+    sel_diff = "Effortless"
+    comp.main(sel_diff)
 
 
 def lvl2():
-    comp.main("Easy")
+    sel_diff = "Easy"
+    comp.main(sel_diff)
 
 
 application = thorpy.Application((800, 600), "Level")

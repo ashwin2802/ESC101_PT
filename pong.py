@@ -1,6 +1,8 @@
 import math
 import random
 import pygame
+import importlib
+import sys
 
 
 def debug(var):
@@ -9,11 +11,6 @@ def debug(var):
         f.write("\n")
         f.close()
     return
-
-
-def model_select(diff):
-    if(diff == "Effortless"):
-        model = ""
 
 
 class Ball(pygame.sprite.Sprite):
@@ -141,7 +138,25 @@ class Pad(pygame.sprite.Sprite):
         self.state = "movedown"
 
 
+# Remove comment blox once the class is ready
+
 class AI(Pad):
     def __init__(self, diff):
         super().__init__("right")
-        self.model = model_select(diff)
+        self.name = self.model_select(diff)
+        temp = importlib.import_module('models')
+        self.model = getattr(temp, self.name)
+        self.prediction = self.model.get_prediction()
+
+    def update(self):
+        if self.prediction == -1:
+            self.movedown()
+        elif self.prediction == 1:
+            self.moveup()
+        elif self.prediction == 0:
+            self.state = "still"
+            self.movepos = [0, 0]
+
+    def model_select(self, diff):
+        if(diff == "Effortless"):
+            return "hardcoded"

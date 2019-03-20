@@ -1,7 +1,7 @@
 *.pages
 IMG*
+debug*
 
 .vscode/
 Tutorials/
-build/
 __pycache__/

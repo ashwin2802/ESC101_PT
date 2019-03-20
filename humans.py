@@ -1,4 +1,5 @@
 import pygame
+# change the name of this module
 import players as p
 import thorpy
 import pong
@@ -46,6 +47,8 @@ def main():
         # fix intialized angle of the ball
         # add function to change the angle of the ball on reflection
         # this was probably the diff function
+        # diff function glitches, implement a new one
+        # do we need the diff and speed ups? See original pong
         clock.tick(60)
         screen.fill((0, 0, 0))
         #  fix ball movement when the button is held for a long time

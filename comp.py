@@ -25,7 +25,7 @@ def more():
 
 def main(lvl):
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode((900, 600))
     pygame.display.set_caption("Pong")
     background = pygame.Surface(screen.get_size())
     background = background.convert()
@@ -53,6 +53,15 @@ def main(lvl):
         #  fix ball movement when the button is held for a long time
         pygame.key.set_repeat(100, 100)
         for event in pygame.event.get():
+            action = computer.predict()
+            if action == -1:
+                computer.movedown()
+            elif action == 1:
+                computer.moveup()
+            elif action == 0:
+                computer.movepos = [0, 0]
+                computer.state = "still"
+
             if event.type == pygame.QUIT:
                 return
             elif event.type == pygame.KEYDOWN:

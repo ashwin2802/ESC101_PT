@@ -45,7 +45,7 @@ class Ball(pygame.sprite.Sprite):
         self.rect.x = random.randrange(200, 600)
         self.rect.y = random.randrange(200, 400)
         #debug("reset returns")
-        #debug(init_angle)
+        # debug(init_angle)
         return (init_angle, 5.0)
         # debug(self.vector[1])
         # debug("\n")
@@ -74,57 +74,58 @@ class Ball(pygame.sprite.Sprite):
                 # if v < 10:
                 #     v *= 1.02
                 #debug("in update")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 self.vector = (angle, v)
                 #debug("after update")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
             if tl and bl:
                 #angle = math.pi - angle
                 player2.score += 1
                 v = 5
                 # scope error here
                 #debug("in update")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 self.vector = self.reset()
                 #debug("after update")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
             if tr and br:
                 #angle = math.pi - angle
                 player1.score += 1
                 v = 5
                 #debug("in update")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 self.vector = self.reset()
                 #debug("after update")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
         else:
             #player1.rect.inflate(-3, -3)
             #player2.rect.inflate(-3, -3)
             if self.rect.colliderect(player1.rect) == 1 and not self.hit:
                 #debug("before collision")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 (angle, v) = self.vector
                 angle = int(math.degrees(math.pi - math.radians(angle)))
                 # if v < player1.speed:
                 #     v *= 1.05
                 self.vector = (angle, v)
                 #debug("after collison")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 self.hit = not self.hit
             elif self.rect.colliderect(player2.rect) == 1 and not self.hit:
                 #debug("before collision")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 (angle, v) = self.vector
                 angle = int(math.degrees(math.pi - math.radians(angle)))
                 # if v < player2.speed:
                 #     v *= 1.08
                 self.vector = (angle, v)
                 #debug("after collision")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 self.hit = not self.hit
             elif self.hit:
                 self.hit = not self.hit
         #self.vector = (angle, v)
+
 
 class FastBall(Ball):
     # change the default speed and angle range, sometimes gets boring
@@ -149,57 +150,58 @@ class FastBall(Ball):
                 if v < 10:
                     v *= 1.02
                 #debug("in update")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 self.vector = (angle, v)
                 #debug("after update")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
             if tl and bl:
                 #angle = math.pi - angle
                 player2.score += 1
                 v = 5
                 # scope error here
                 #debug("in update")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 self.vector = self.reset()
                 #debug("after update")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
             if tr and br:
                 #angle = math.pi - angle
                 player1.score += 1
                 v = 5
                 #debug("in update")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 self.vector = self.reset()
                 #debug("after update")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
         else:
             #player1.rect.inflate(-3, -3)
             #player2.rect.inflate(-3, -3)
             if self.rect.colliderect(player1.rect) == 1 and not self.hit:
                 #debug("before collision")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 (angle, v) = self.vector
                 angle = int(math.degrees(math.pi - math.radians(angle)))
                 if v < 2*player1.speed:
                     v *= 1.07
                 self.vector = (angle, v)
                 #debug("after collison")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 self.hit = not self.hit
             elif self.rect.colliderect(player2.rect) == 1 and not self.hit:
                 #debug("before collision")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 (angle, v) = self.vector
                 angle = int(math.degrees(math.pi - math.radians(angle)))
                 if v < player2.speed:
                     v *= 1.07
                 self.vector = (angle, v)
                 #debug("after collision")
-                #debug(self.vector[0])
+                # debug(self.vector[0])
                 self.hit = not self.hit
             elif self.hit:
                 self.hit = not self.hit
         #self.vector = (angle, v)
+
 
 class Pad(pygame.sprite.Sprite):
     def __init__(self, side):
@@ -246,16 +248,9 @@ class AI(Pad):
         self.name = self.model_select(diff)
         temp = importlib.import_module('models')
         self.model = getattr(temp, self.name)
-        self.prediction = self.model.get_prediction()
 
-    def update(self):
-        if self.prediction == -1:
-            self.movedown()
-        elif self.prediction == 1:
-            self.moveup()
-        elif self.prediction == 0:
-            self.state = "still"
-            self.movepos = [0, 0]
+    def predict(self):
+        return self.model.get_prediction()
 
     def model_select(self, diff):
         if(diff == "Effortless"):

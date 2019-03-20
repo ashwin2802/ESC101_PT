@@ -4,7 +4,7 @@ import pygame
 
 
 def debug(var):
-    with open("output.txt", "a") as f:
+    with open("debug.txt", "a") as f:
         f.write(str(var))
         f.write("\n")
         f.close()
@@ -17,6 +17,8 @@ def model_select(diff):
 
 
 class Ball(pygame.sprite.Sprite):
+    # change the default speed and angle range, sometimes gets boring
+    # switched off speed increment currently, implement rl normally then see if it can handle it
     def __init__(self):
         super().__init__()
         self.width = 10
@@ -66,8 +68,8 @@ class Ball(pygame.sprite.Sprite):
             if (tr and tl) or (br and bl):
                 (angle, v) = self.vector
                 angle = -angle
-                if v < 10:
-                    v *= 1.02
+                # if v < 10:
+                #     v *= 1.02
                 self.vector = (angle, v)
             if tl and bl:
                 #angle = math.pi - angle
@@ -86,15 +88,15 @@ class Ball(pygame.sprite.Sprite):
             if self.rect.colliderect(player1.rect) == 1 and not self.hit:
                 (angle, v) = self.vector
                 angle = math.pi - angle
-                if v < player1.speed:
-                    v *= 1.05
+                # if v < player1.speed:
+                #     v *= 1.05
                 self.vector = (angle, v)
                 self.hit = not self.hit
             elif self.rect.colliderect(player2.rect) == 1 and not self.hit:
                 (angle, v) = self.vector
                 angle = math.pi - angle
-                if v < player2.speed:
-                    v *= 1.08
+                # if v < player2.speed:
+                #     v *= 1.08
                 self.vector = (angle, v)
                 self.hit = not self.hit
             elif self.hit:

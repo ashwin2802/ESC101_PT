@@ -43,9 +43,6 @@ def main(lvl):
     game_over = False
 
     while 1:
-        # fix intialized angle of the ball
-        # add function to change the angle of the ball on reflection
-        # this was probably the diff function
         clock.tick(60)
         screen.fill((0, 0, 0))
         #  fix ball movement when the button is held for a long time
@@ -108,5 +105,4 @@ def main(lvl):
 
 
 if __name__ == "__main__":
-    import sys
     main(lvl=diff.sel_diff)

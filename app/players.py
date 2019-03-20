@@ -1,5 +1,4 @@
-import humans
-import diff
+from app import diff, humans
 import thorpy
 import pygame
 

@@ -1,8 +1,7 @@
 import pygame
 # change the name of this module
-import players as p
+from app import diff, pong, players as p
 import thorpy
-import pong
 
 
 def buttons(screen):
@@ -22,9 +21,9 @@ def more():
     p.menu.play()
 
 
-def main():
+def main(lvl):
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode((900, 600))
     pygame.display.set_caption("Pong")
     background = pygame.Surface(screen.get_size())
     background = background.convert()
@@ -32,11 +31,11 @@ def main():
     font = pygame.font.Font(None, 36)
 
     global player1
-    global player2
+    global computer
     player1 = pong.Pad("left")
-    player2 = pong.Pad("right")
-    ball = pong.FastBall()
-    players = pygame.sprite.RenderPlain((player1, player2))
+    computer = pong.AI(lvl)
+    ball = pong.Ball()
+    players = pygame.sprite.RenderPlain((player1, computer))
     balls = pygame.sprite.RenderPlain(ball)
     screen.blit(background, (0, 0))
     pygame.display.flip()
@@ -47,13 +46,20 @@ def main():
         # fix intialized angle of the ball
         # add function to change the angle of the ball on reflection
         # this was probably the diff function
-        # diff function glitches, implement a new one
-        # do we need the diff and speed ups? See original pong
         clock.tick(60)
         screen.fill((0, 0, 0))
         #  fix ball movement when the button is held for a long time
         pygame.key.set_repeat(100, 100)
         for event in pygame.event.get():
+            action = computer.predict()
+            if action == -1:
+                computer.movedown()
+            elif action == 1:
+                computer.moveup()
+            elif action == 0:
+                computer.movepos = [0, 0]
+                computer.state = "still"
+
             if event.type == pygame.QUIT:
                 return
             elif event.type == pygame.KEYDOWN:
@@ -61,18 +67,11 @@ def main():
                     player1.moveup()
                 if event.key == pygame.K_s:
                     player1.movedown()
-                if event.key == pygame.K_UP:
-                    player2.moveup()
-                if event.key == pygame.K_DOWN:
-                    player2.movedown()
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_w or event.key == pygame.K_s:
                     player1.movepos = [0, 0]
                     player1.state = "still"
-                if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
-                    player2.movepos = [0, 0]
-                    player2.state = "still"
-        if abs(player1.score-player2.score) > 3:
+        if abs(player1.score-computer.score) > 3:
             game_over = True
 
         if game_over:
@@ -80,33 +79,34 @@ def main():
             textpos = text.get_rect(centerx=background.get_width()/2)
             textpos.top = 50
             screen.blit(text, textpos)
-            win_mess = "Player 1 wins!" if (
-                player1.score > player2.score) else "Player 2 wins!"
+            win_mess = "You win!" if (
+                player1.score > computer.score) else "You lose!"
             win_text = font.render(win_mess, 1, (200, 200, 200))
             winpos = win_text.get_rect(centerx=background.get_width()/2)
             winpos.top = 150
             screen.blit(win_text, winpos)
             buttons(screen)
 
-        scoreprint = "P1: " + str(player1.score)
+        scoreprint = "You: " + str(player1.score)
         text = font.render(scoreprint, 1, (255, 255, 255))
         textpos = (200, 0)
         screen.blit(text, textpos)
 
-        scoreprint = "P2: " + str(player2.score)
+        scoreprint = "Computer: " + str(computer.score)
         text = font.render(scoreprint, 1, (255, 255, 255))
         textpos = (600, 0)
         screen.blit(text, textpos)
 
         screen.blit(background, ball.rect, ball.rect)
         screen.blit(background, player1.rect, player1.rect)
-        screen.blit(background, player2.rect, player2.rect)
-        ball.update(player1, player2)
+        screen.blit(background, computer.rect, computer.rect)
+        ball.update(player1, computer)
         players.update()
         balls.draw(screen)
         players.draw(screen)
         pygame.display.flip()
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    import sys
+    main(lvl=diff.sel_diff)

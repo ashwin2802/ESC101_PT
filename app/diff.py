@@ -1,5 +1,5 @@
 import thorpy
-import comp
+from app import comp
 
 
 def lvl1():

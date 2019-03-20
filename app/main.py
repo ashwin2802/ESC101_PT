@@ -1,5 +1,5 @@
 import thorpy
-import players
+from app import players
 import pygame
 
 

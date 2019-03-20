@@ -35,7 +35,7 @@ def main():
     global player2
     player1 = pong.Pad("left")
     player2 = pong.Pad("right")
-    ball = pong.Ball()
+    ball = pong.FastBall()
     players = pygame.sprite.RenderPlain((player1, player2))
     balls = pygame.sprite.RenderPlain(ball)
     screen.blit(background, (0, 0))

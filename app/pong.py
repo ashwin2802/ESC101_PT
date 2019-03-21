@@ -23,7 +23,7 @@ class Ball(pygame.sprite.Sprite):
         self.image.fill([255, 255, 255])
         self.rect = self.image.get_rect()
         self.screen = pygame.display.get_surface()
-        self.area = self.screen.get_rect()
+        self.area = pygame.Rect(0, 100, 800, 600)
         self.hit = 0
         self.vector = self.reset()
 
@@ -129,8 +129,8 @@ class Pad(pygame.sprite.Sprite):
         self.image = pygame.Surface([15, 75])
         self.image.fill([255, 255, 255])
         self.rect = self.image.get_rect()
-        screen = pygame.display.get_surface()
-        self.area = screen.get_rect()
+        self.screen = pygame.display.get_surface()
+        self.area = pygame.Rect(0, 100, 800, 600)
         self.side = side
         self.speed = 10
         self.state = "still"

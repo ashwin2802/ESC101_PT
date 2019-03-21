@@ -2,6 +2,19 @@ import pygame
 # change the name of this module
 from app import diff, pong, players as p
 import thorpy
+import os.path as path
+
+
+def ball_pos(ball):
+    (angle, v) = ball.vector
+    (x, y) = ball.rect.topleft
+    data = (x, y, angle, v)
+    result = ','.join(map(str, data))
+    filepath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), 'data/ball_pos.txt')
+    with open(filepath, 'w') as f:
+        f.write(result)
+        f.close()
 
 
 def buttons(screen):
@@ -23,7 +36,7 @@ def more():
 
 def main(lvl):
     pygame.init()
-    screen = pygame.display.set_mode((900, 600))
+    screen = pygame.display.set_mode((800, 700))
     pygame.display.set_caption("Pong")
     background = pygame.Surface(screen.get_size())
     background = background.convert()
@@ -48,6 +61,9 @@ def main(lvl):
         #  fix ball movement when the button is held for a long time
         pygame.key.set_repeat(100, 100)
         for event in pygame.event.get():
+            if(lvl == 'Effortless'):
+                ball_pos(ball)
+            # pong.debug(player1.rect.topleft[1])
             action = computer.predict()
             if action == -1:
                 computer.movedown()
@@ -86,14 +102,15 @@ def main(lvl):
 
         scoreprint = "You: " + str(player1.score)
         text = font.render(scoreprint, 1, (255, 255, 255))
-        textpos = (200, 0)
+        textpos = (200, 40)
         screen.blit(text, textpos)
 
         scoreprint = "Computer: " + str(computer.score)
         text = font.render(scoreprint, 1, (255, 255, 255))
-        textpos = (600, 0)
+        textpos = (600, 40)
         screen.blit(text, textpos)
-
+        # five pixels unaccounted for somewhere, pad cant access them
+        pygame.draw.line(screen, (255, 255, 255), (0, 95), (800, 95), 10)
         screen.blit(background, ball.rect, ball.rect)
         screen.blit(background, player1.rect, player1.rect)
         screen.blit(background, computer.rect, computer.rect)

@@ -24,12 +24,12 @@ def more():
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode((800, 700))
     pygame.display.set_caption("Pong")
     background = pygame.Surface(screen.get_size())
     background = background.convert()
     background.fill((0, 0, 0))
-    font = pygame.font.Font(None, 36)
+    font = pygame.font.Font(None, 50)
 
     global player1
     global player2
@@ -90,12 +90,13 @@ def main():
 
         scoreprint = "P1: " + str(player1.score)
         text = font.render(scoreprint, 1, (255, 255, 255))
-        textpos = (200, 0)
+        textpos = (200, 40)
         screen.blit(text, textpos)
-
+        # five pixels unaccounted for somewhere, pad cant access them
+        pygame.draw.line(screen, (255, 255, 255), (0, 95), (800, 95), 10)
         scoreprint = "P2: " + str(player2.score)
         text = font.render(scoreprint, 1, (255, 255, 255))
-        textpos = (600, 0)
+        textpos = (600, 40)
         screen.blit(text, textpos)
 
         screen.blit(background, ball.rect, ball.rect)

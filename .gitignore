@@ -1,6 +1,7 @@
 *.pages
 IMG*
 debug*
+*.pyc
 
 .vscode/
 Tutorials/

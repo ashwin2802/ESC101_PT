@@ -172,4 +172,6 @@ class AI(Pad):
 
     def model_select(self, diff):
         if(diff == "Effortless"):
-            return "hardcoded"
+            return "random"
+        if(diff == "Easy"):
+            return "follower"

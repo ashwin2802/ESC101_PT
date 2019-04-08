@@ -7,11 +7,22 @@ import os.path as path
 
 def ball_pos(ball):
     (angle, v) = ball.vector
-    (x, y) = ball.rect.topleft
+    (x, y) = ball.rect.center
     data = (x, y, angle, v)
     result = ','.join(map(str, data))
     filepath = path.join(path.dirname(path.dirname(
         path.abspath(__file__))), 'data/ball_pos.txt')
+    with open(filepath, 'w') as f:
+        f.write(result)
+        f.close()
+
+
+def pad_pos(computer):
+    (x, y) = computer.rect.center
+    data = (x, y)
+    result = ','.join(map(str, data))
+    filepath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), 'data/pad_pos.txt')
     with open(filepath, 'w') as f:
         f.write(result)
         f.close()
@@ -61,10 +72,19 @@ def main(lvl):
         #  fix ball movement when the button is held for a long time
         pygame.key.set_repeat(100, 100)
         for event in pygame.event.get():
-            if(lvl == 'Effortless'):
+            if(lvl == 'Easy'):
                 ball_pos(ball)
+                pad_pos(computer)
             # pong.debug(player1.rect.topleft[1])
             action = computer.predict()
+
+            # pong.debug(computer.rect.topright[1])
+            if(lvl in ['Easy']):
+                if(computer.rect.topright[1] < 110):
+                    computer.movedown()
+                elif(computer.rect.bottomright[1] > 690):
+                    computer.moveup()
+
             if action == -1:
                 computer.movedown()
             elif action == 1:

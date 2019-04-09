@@ -2,7 +2,7 @@ import math
 import random
 import pygame
 import importlib
-import app
+#import app
 #from app import models
 
 
@@ -23,7 +23,7 @@ class Ball(pygame.sprite.Sprite):
         self.image.fill([255, 255, 255])
         self.rect = self.image.get_rect()
         self.screen = pygame.display.get_surface()
-        self.area = pygame.Rect(0, 100, 800, 600)
+        self.area = pygame.Rect(0, 100, 600, 600)
         self.hit = 0
         self.vector = self.reset()
 
@@ -33,9 +33,9 @@ class Ball(pygame.sprite.Sprite):
             init_angle = -init_angle
         if random.randrange(2) == 0:
             init_angle += 180
-        self.rect.x = random.randrange(200, 600)
+        self.rect.x = random.randrange(200, 400)
         self.rect.y = random.randrange(200, 400)
-        return (init_angle, 5.0)
+        return (init_angle, 8.0)
 
     def calcnewpos(self, rect, vector):
         (angle, v) = vector
@@ -57,11 +57,11 @@ class Ball(pygame.sprite.Sprite):
                 self.vector = (angle, v)
             if tl and bl:
                 player2.score += 1
-                v = 5
+                v = 8
                 self.vector = self.reset()
             if tr and br:
                 player1.score += 1
-                v = 5
+                v = 8
                 self.vector = self.reset()
         else:
             if self.rect.colliderect(player1.rect) == 1 and not self.hit:
@@ -130,7 +130,7 @@ class Pad(pygame.sprite.Sprite):
         self.image.fill([255, 255, 255])
         self.rect = self.image.get_rect()
         self.screen = pygame.display.get_surface()
-        self.area = pygame.Rect(0, 100, 800, 600)
+        self.area = pygame.Rect(0, 100, 600, 600)
         self.side = side
         self.speed = 10
         self.state = "still"
@@ -161,14 +161,14 @@ class Pad(pygame.sprite.Sprite):
 
 
 class AI(Pad):
-    def __init__(self, diff):
-        super().__init__("right")
+    def __init__(self, diff, side):
+        super().__init__(side)
         self.name = self.model_select(diff)
         temp = importlib.import_module('models')
         self.model = getattr(temp, self.name)
 
     def predict(self):
-        return self.model.get_prediction()
+        return self.model.get_prediction(self.side)
 
     def model_select(self, diff):
         if(diff == "Effortless"):

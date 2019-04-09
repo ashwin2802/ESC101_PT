@@ -1,31 +1,7 @@
 import pygame
-# change the name of this module
-from app import diff, pong, players as p
+# change the name of this module (players)
+from app import diff, data, pong, players as p
 import thorpy
-import os.path as path
-
-
-def ball_pos(ball):
-    (angle, v) = ball.vector
-    (x, y) = ball.rect.center
-    data = (x, y, angle, v)
-    result = ','.join(map(str, data))
-    filepath = path.join(path.dirname(path.dirname(
-        path.abspath(__file__))), 'data/ball_pos.txt')
-    with open(filepath, 'w') as f:
-        f.write(result)
-        f.close()
-
-
-def pad_pos(computer):
-    (x, y) = computer.rect.center
-    data = (x, y)
-    result = ','.join(map(str, data))
-    filepath = path.join(path.dirname(path.dirname(
-        path.abspath(__file__))), 'data/pad_pos.txt')
-    with open(filepath, 'w') as f:
-        f.write(result)
-        f.close()
 
 
 def buttons(screen):
@@ -47,7 +23,7 @@ def more():
 
 def main(lvl):
     pygame.init()
-    screen = pygame.display.set_mode((800, 700))
+    screen = pygame.display.set_mode((600, 700))
     pygame.display.set_caption("Pong")
     background = pygame.Surface(screen.get_size())
     background = background.convert()
@@ -57,7 +33,8 @@ def main(lvl):
     global player1
     global computer
     player1 = pong.Pad("left")
-    computer = pong.AI(lvl)
+    #player1 = pong.AI(lvl, "left")
+    computer = pong.AI(lvl, "right")
     ball = pong.Ball()
     players = pygame.sprite.RenderPlain((player1, computer))
     balls = pygame.sprite.RenderPlain(ball)
@@ -71,28 +48,20 @@ def main(lvl):
         screen.fill((0, 0, 0))
         #  fix ball movement when the button is held for a long time
         pygame.key.set_repeat(100, 100)
+        if(lvl == 'Easy'):
+            data.ball_pos(ball)
+            data.pad_pos(computer, "right")
+        # pong.debug(player1.rect.topleft[1])
+        action = computer.predict()
+        # pong.debug(computer.rect.topright[1])
+        if action == -1:
+            computer.movedown()
+        elif action == 1:
+            computer.moveup()
+        elif action == 0:
+            computer.movepos = [0, 0]
+            computer.state = "still"
         for event in pygame.event.get():
-            if(lvl == 'Easy'):
-                ball_pos(ball)
-                pad_pos(computer)
-            # pong.debug(player1.rect.topleft[1])
-            action = computer.predict()
-
-            # pong.debug(computer.rect.topright[1])
-            if(lvl in ['Easy']):
-                if(computer.rect.topright[1] < 110):
-                    computer.movedown()
-                elif(computer.rect.bottomright[1] > 690):
-                    computer.moveup()
-
-            if action == -1:
-                computer.movedown()
-            elif action == 1:
-                computer.moveup()
-            elif action == 0:
-                computer.movepos = [0, 0]
-                computer.state = "still"
-
             if event.type == pygame.QUIT:
                 return
             elif event.type == pygame.KEYDOWN:
@@ -122,12 +91,12 @@ def main(lvl):
 
         scoreprint = "You: " + str(player1.score)
         text = font.render(scoreprint, 1, (255, 255, 255))
-        textpos = (200, 40)
+        textpos = (100, 40)
         screen.blit(text, textpos)
 
         scoreprint = "Computer: " + str(computer.score)
         text = font.render(scoreprint, 1, (255, 255, 255))
-        textpos = (600, 40)
+        textpos = (300, 40)
         screen.blit(text, textpos)
         # five pixels unaccounted for somewhere, pad cant access them
         pygame.draw.line(screen, (255, 255, 255), (0, 95), (800, 95), 10)
@@ -141,5 +110,6 @@ def main(lvl):
         pygame.display.flip()
 
 
+# why do we need this?
 if __name__ == "__main__":
     main(lvl=diff.sel_diff)

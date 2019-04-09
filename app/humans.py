@@ -1,7 +1,7 @@
 import pygame
 # change the name of this module
 from app import players as p
-import thorpy
+#import thorpy
 from app import pong
 
 
@@ -24,7 +24,7 @@ def more():
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((800, 700))
+    screen = pygame.display.set_mode((600, 700))
     pygame.display.set_caption("Pong")
     background = pygame.Surface(screen.get_size())
     background = background.convert()
@@ -90,13 +90,13 @@ def main():
 
         scoreprint = "P1: " + str(player1.score)
         text = font.render(scoreprint, 1, (255, 255, 255))
-        textpos = (200, 40)
+        textpos = (100, 40)
         screen.blit(text, textpos)
         # five pixels unaccounted for somewhere, pad cant access them
         pygame.draw.line(screen, (255, 255, 255), (0, 95), (800, 95), 10)
         scoreprint = "P2: " + str(player2.score)
         text = font.render(scoreprint, 1, (255, 255, 255))
-        textpos = (600, 40)
+        textpos = (300, 40)
         screen.blit(text, textpos)
 
         screen.blit(background, ball.rect, ball.rect)

@@ -1,4 +1,4 @@
-from app import main, players, pong, comp, humans, diff
+from app import main, players, pong, comp, humans, diff, data, trainer
 import sys
 import os.path as path
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))

@@ -1,7 +1,5 @@
-import os.path as path
-from app import comp
-from app import pong
 import random
+#from app import pong
 
 
 def make_prediction():
@@ -16,6 +14,6 @@ def make_prediction():
     return pred
 
 
-def get_prediction():
+def get_prediction(side):
     prediction = make_prediction()
     return prediction

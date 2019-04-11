@@ -3,7 +3,10 @@ import os
 from PIL import Image
 from app import pong
 import pygame
+import shutil
 #from app import pong
+
+# reorder these functions properly
 
 
 def num_games(num):
@@ -11,6 +14,50 @@ def num_games(num):
         path.abspath(__file__))), 'data/train/num_games.txt')
     with(open(filepath, 'w+')) as f:
         f.write(str(num))
+
+
+def run_scrot(screen):
+    game_surface = pygame.Rect(0, 100, 640, 640)
+    frame_num = get_run_frame()
+    path = "data/run"
+    pygame.image.save(screen.subsurface(game_surface),
+                      path+"/frame"+str(frame_num)+".jpg")
+    run_frame(frame_num+1)
+
+
+def run_frame(num):
+    filepath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), 'data/run'+'/run_frame.txt')
+    with(open(filepath, 'w+')) as f:
+        f.write(str(num))
+
+
+def get_run_frame():
+    filepath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), 'data/run')
+    # put this in all functions
+    if not path.exists(filepath):
+        os.makedirs(filepath)
+        open(filepath+'/run_frame.txt', 'w+').close()
+    with(open(filepath+'/run_frame.txt', 'r')) as f:
+        num = f.readline()
+        # pong.debug(num)
+        f.close()
+    if(num == ""):
+        return 0
+    else:
+        return int(num)
+
+
+def remove_run():
+    shutil.rmtree('data/run')
+
+
+def run_frame_load():
+    cur_frame_num = get_run_frame()-1
+    filepath = path.join(path.dirname(path.dirname(path.abspath(
+        __file__))), 'data/run/frame'+str(cur_frame_num)+'.jpg')
+    return Image.open(filepath)
 
 
 def get_num_games():
@@ -25,27 +72,11 @@ def get_num_games():
         return int(num)
 
 
-def total_games(num):
-    filepath = path.join(path.dirname(path.dirname(
-        path.abspath(__file__))), 'data/train/total_games.txt')
-    with(open(filepath, 'w+')) as f:
-        f.write(str(num))
-
-
 def frame_load(num):
     cur_frame_num = get_frame_num(num)-1
     filepath = path.join(path.dirname(path.dirname(path.abspath(
         __file__))), 'data/train/game'+str(num)+'/frame'+str(cur_frame_num)+'.jpg')
     return Image.open(filepath)
-
-
-def get_total_games():
-    filepath = path.join(path.dirname(path.dirname(
-        path.abspath(__file__))), 'data/train/total_games.txt')
-    with(open(filepath, 'w+')) as f:
-        num = f.readline()
-        f.close()
-    return num
 
 
 def frame(num):
@@ -152,11 +183,13 @@ def get_score(side):
         f.close()
     return int(score)
 
+
 def update_log(message):
     filepath = "data/train/train_log.txt"
-    with open(filepath,'a+') as f:
+    with open(filepath, 'a+') as f:
         f.write(str(message)+"\n")
         f.close()
+
 
 def write_score(num, side):
     game_num = get_num_games()

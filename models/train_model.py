@@ -4,9 +4,9 @@ try:
     import cPickle as pickle
 except:
     import pickle
-import pygame
-import os.path as path
-from app import pong
+#import pygame
+#import os.path as path
+#from app import pong
 from app import data
 
 H = 200
@@ -20,7 +20,9 @@ self_score = 0
 
 A = 80*80
 if resume:
-    model = pickle.load('weights/model.p', 'rb')
+    with open('weights/model.p', 'rb') as weights:
+        model = pickle.load(weights)
+        weights.close()
 else:
     model = {}
     model['W1'] = np.random.randn(H, A)/np.sqrt(A)
@@ -144,11 +146,12 @@ def update():
                 model[x] += learn_rate*g/np.sqrt(RMSProp_mem[x]+1e-5)
                 gradient_buf[x] = np.zeros_like(y)
         run_reward = sum_reward if run_reward is None else run_reward*0.99 + sum_reward*0.01
-        data.update_log("Episode over. Resetting. Episode reward was " + str(sum_reward)+". running mean: " + str(round(run_reward, 2))
+        data.update_log("Episode over. Resetting. Episode reward was " +
+                        str(sum_reward)+". running mean: " + str(round(run_reward, 2)))
         if ep_num % 10 == 0:
             data.update_log("10 episodes done. Saving weights.")
             pickle.dump(model, open('weights/model.p', 'wb'))
-        sum_reward=0
-        self_score=0
-        player_score=0
-        prev_frame=None
+        sum_reward = 0
+        self_score = 0
+        player_score = 0
+        prev_frame = None

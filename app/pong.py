@@ -180,3 +180,5 @@ class AI(Pad):
         # add the buttons
         if(diff == "Train"):
             return "train_model"
+        if(diff == "Hard"):
+            return "numpy_model"

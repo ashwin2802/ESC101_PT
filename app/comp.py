@@ -23,7 +23,7 @@ def more():
 
 def main(lvl):
     pygame.init()
-    screen = pygame.display.set_mode((600, 700))
+    screen = pygame.display.set_mode((640, 740))
     pygame.display.set_caption("Pong")
     background = pygame.Surface(screen.get_size())
     background = background.convert()

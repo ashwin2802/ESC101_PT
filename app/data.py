@@ -1,5 +1,6 @@
 import os.path as path
 import os
+from PIL import Image
 from app import pong
 import pygame
 #from app import pong
@@ -18,10 +19,33 @@ def get_num_games():
     with(open(filepath, 'r')) as f:
         num = f.readline()
         f.close()
-    if(num==""):
+    if(num == ""):
         return 0
     else:
         return int(num)
+
+
+def total_games(num):
+    filepath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), 'data/train/total_games.txt')
+    with(open(filepath, 'w+')) as f:
+        f.write(str(num))
+
+
+def frame_load(num):
+    cur_frame_num = get_frame_num(num)-1
+    filepath = path.join(path.dirname(path.dirname(path.abspath(
+        __file__))), 'data/train/game'+str(num)+'/frame'+str(cur_frame_num)+'.jpg')
+    return Image.open(filepath)
+
+
+def get_total_games():
+    filepath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), 'data/train/total_games.txt')
+    with(open(filepath, 'w+')) as f:
+        num = f.readline()
+        f.close()
+    return num
 
 
 def frame(num):
@@ -33,8 +57,8 @@ def frame(num):
         f.write(str(num))
 
 
-def get_frame_num():
-    game_num = get_num_games()
+def get_frame_num(game_num):
+    #game_num = get_num_games()
     filepath = path.join(path.dirname(path.dirname(
         path.abspath(__file__))), 'data/train/game'+str(game_num))
     if not path.exists(filepath):
@@ -51,13 +75,30 @@ def get_frame_num():
 
 
 def scrot(screen):
-    game_surface = pygame.Rect(0, 100, 600, 600)
+    game_surface = pygame.Rect(0, 100, 640, 640)
     game_num = get_num_games()
-    frame_num = get_frame_num()
+    frame_num = get_frame_num(game_num)
     path = "data/train/game"+str(game_num)
     pygame.image.save(screen.subsurface(game_surface),
                       path+"/frame"+str(frame_num)+".jpg")
     frame(frame_num+1)
+
+
+def score(num):
+    game_num = get_num_games()
+    filepath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), 'data/train/game'+str(game_num)+'/result.txt')
+    with(open(filepath, 'w+')) as f:
+        f.write(str(num))
+
+
+def get_win(game_num):
+    filepath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), 'data/train/game'+str(game_num)+'/result.txt')
+    with(open(filepath, 'r')) as f:
+        win = f.readline()
+        f.close()
+    return win
 
 
 def ball_pos(ball):
@@ -100,6 +141,30 @@ def get_pad_pos(side):
     [x, y] = data.split(',')
     # pong.debug(data)
     return int(x), int(y)
+
+
+def get_score(side):
+    game_num = get_num_games()
+    filepath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), 'data/train/game'+str(game_num)+'/score_')
+    with open(filepath+side+'.txt', 'r') as f:
+        score = f.readline()
+        f.close()
+    return int(score)
+
+def update_log(message):
+    filepath = "data/train/train_log.txt"
+    with open(filepath,'a+') as f:
+        f.write(str(message)+"\n")
+        f.close()
+
+def write_score(num, side):
+    game_num = get_num_games()
+    filepath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), 'data/train/game'+str(game_num)+'/score_')
+    with open(filepath+side+'.txt', 'w+') as f:
+        f.write(str(num))
+        f.close()
 
 
 def get_ball_pos():

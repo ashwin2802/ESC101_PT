@@ -23,7 +23,7 @@ class Ball(pygame.sprite.Sprite):
         self.image.fill([255, 255, 255])
         self.rect = self.image.get_rect()
         self.screen = pygame.display.get_surface()
-        self.area = pygame.Rect(0, 100, 600, 600)
+        self.area = pygame.Rect(0, 100, 640, 640)
         self.hit = 0
         self.vector = self.reset()
 
@@ -130,7 +130,7 @@ class Pad(pygame.sprite.Sprite):
         self.image.fill([255, 255, 255])
         self.rect = self.image.get_rect()
         self.screen = pygame.display.get_surface()
-        self.area = pygame.Rect(0, 100, 600, 600)
+        self.area = pygame.Rect(0, 100, 640, 640)
         self.side = side
         self.speed = 10
         self.state = "still"
@@ -172,6 +172,11 @@ class AI(Pad):
 
     def model_select(self, diff):
         if(diff == "Effortless"):
-            return "random"
+            return "rand"
         if(diff == "Easy"):
+            return "glitchy"
+        if(diff == "Normal"):
             return "follower"
+        # add the buttons
+        if(diff == "Train"):
+            return "train_model"

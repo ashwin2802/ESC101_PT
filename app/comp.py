@@ -48,10 +48,30 @@ def main(lvl):
         screen.fill((0, 0, 0))
         #  fix ball movement when the button is held for a long time
         pygame.key.set_repeat(100, 100)
-        if(lvl == 'Easy'):
+
+        scoreprint = "You: " + str(player1.score)
+        text = font.render(scoreprint, 1, (255, 255, 255))
+        textpos = (100, 40)
+        screen.blit(text, textpos)
+
+        scoreprint = "Computer: " + str(computer.score)
+        text = font.render(scoreprint, 1, (255, 255, 255))
+        textpos = (300, 40)
+        screen.blit(text, textpos)
+        # five pixels unaccounted for somewhere, pad cant access them
+        pygame.draw.line(screen, (255, 255, 255), (0, 95), (800, 95), 10)
+        screen.blit(background, ball.rect, ball.rect)
+        screen.blit(background, player1.rect, player1.rect)
+        screen.blit(background, computer.rect, computer.rect)
+
+        if(lvl == 'Easy' or lvl == "Normal"):
             data.ball_pos(ball)
             data.pad_pos(computer, "right")
         # pong.debug(player1.rect.topleft[1])
+
+        if(lvl == 'Hard'):
+            data.run_scrot(screen)
+
         action = computer.predict()
         # pong.debug(computer.rect.topright[1])
         if action == -1:
@@ -77,32 +97,20 @@ def main(lvl):
             game_over = True
 
         if game_over:
+            if(lvl == "Hard"):
+                data.remove_run()
             text = font.render("Game Over", 1, (200, 200, 200))
             textpos = text.get_rect(centerx=background.get_width()/2)
-            textpos.top = 50
+            textpos.top = 150
             screen.blit(text, textpos)
             win_mess = "You win!" if (
                 player1.score > computer.score) else "You lose!"
             win_text = font.render(win_mess, 1, (200, 200, 200))
             winpos = win_text.get_rect(centerx=background.get_width()/2)
-            winpos.top = 150
+            winpos.top = 250
             screen.blit(win_text, winpos)
             buttons(screen)
 
-        scoreprint = "You: " + str(player1.score)
-        text = font.render(scoreprint, 1, (255, 255, 255))
-        textpos = (100, 40)
-        screen.blit(text, textpos)
-
-        scoreprint = "Computer: " + str(computer.score)
-        text = font.render(scoreprint, 1, (255, 255, 255))
-        textpos = (300, 40)
-        screen.blit(text, textpos)
-        # five pixels unaccounted for somewhere, pad cant access them
-        pygame.draw.line(screen, (255, 255, 255), (0, 95), (800, 95), 10)
-        screen.blit(background, ball.rect, ball.rect)
-        screen.blit(background, player1.rect, player1.rect)
-        screen.blit(background, computer.rect, computer.rect)
         ball.update(player1, computer)
         players.update()
         balls.draw(screen)

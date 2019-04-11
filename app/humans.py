@@ -78,13 +78,13 @@ def main():
         if game_over:
             text = font.render("Game Over", 1, (200, 200, 200))
             textpos = text.get_rect(centerx=background.get_width()/2)
-            textpos.top = 50
+            textpos.top = 150
             screen.blit(text, textpos)
             win_mess = "Player 1 wins!" if (
                 player1.score > player2.score) else "Player 2 wins!"
             win_text = font.render(win_mess, 1, (200, 200, 200))
             winpos = win_text.get_rect(centerx=background.get_width()/2)
-            winpos.top = 150
+            winpos.top = 250
             screen.blit(win_text, winpos)
             buttons(screen)
 

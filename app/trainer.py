@@ -45,7 +45,11 @@ def main():
         screen.blit(background, ball.rect, ball.rect)
         screen.blit(background, computer1.rect, computer1.rect)
         screen.blit(background, computer2.rect, computer2.rect)
+
         data.scrot(screen)
+        data.ball_pos(ball)
+        data.pad_pos(computer1, "left")
+        data.pad_pos(computer2, "right")
 
         action1 = computer1.predict()
         action2 = computer2.predict()
@@ -83,10 +87,6 @@ def main():
                 data.score(2)
             data.num_games(games_played+1)
             main()
-
-        data.ball_pos(ball)
-        data.pad_pos(computer1, "left")
-        data.pad_pos(computer2, "right")
 
         ball.update(computer1, computer2)
         players.update()

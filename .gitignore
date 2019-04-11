@@ -2,6 +2,7 @@
 IMG*
 debug*
 *.pyc
+test*
 
 .vscode/
 Tutorials/

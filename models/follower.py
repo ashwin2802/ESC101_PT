@@ -8,13 +8,13 @@ def make_prediction(ball_x, ball_y, pad_x, pad_y):
     # improve this a bit ?
     # works well, had to just place it out of the event loop
     # works too well maybe?
-    if(ball_y < pad_y + 20):
+    if(ball_y < pad_y + 10):
         pred = 1
         # if(pad_y < 200):
         #   pred = -1
         # pong.debug(pred)
         return pred
-    elif(ball_y > pad_y + 20):
+    elif(ball_y > pad_y + 10):
         pred = -1
         # if(pad_y > 600):
         #   pred = 1

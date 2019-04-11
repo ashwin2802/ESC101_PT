@@ -6,4 +6,4 @@ debug*
 .vscode/
 Tutorials/
 __pycache__/
-data/train/game*
+data/*

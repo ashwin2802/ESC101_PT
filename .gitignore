@@ -7,4 +7,4 @@ test*
 .vscode/
 Tutorials/
 __pycache__/
-data/*
+data/train/*

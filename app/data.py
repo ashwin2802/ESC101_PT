@@ -4,9 +4,24 @@ from PIL import Image
 from app import pong
 import pygame
 import shutil
-#from app import pong
+# from app import pong
 
 # reorder these functions properly
+
+
+def create_dir(rel_path):
+    path_ = path.join(path.dirname(path.dirname(path.abspath(__file__))), rel_path)
+    if not path.exists(path_):
+        os.makedirs(path_)
+    return path_
+
+
+def debug(var):
+    with open("debug.txt", "a") as f:
+        f.write(str(var))
+        f.write("\n")
+        f.close()
+    return
 
 
 def num_games(num):
@@ -51,6 +66,10 @@ def get_run_frame():
 
 def remove_run():
     shutil.rmtree('data/run')
+
+
+def remove_train():
+    shutil.rmtree('data/train')
 
 
 def run_frame_load():
@@ -184,9 +203,46 @@ def get_score(side):
     return int(score)
 
 
-def update_log(message):
-    filepath = "data/train/train_log.txt"
+def update_numpy_log(message):
+    dirpath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), "data/logs/np")
+    if not path.exists(dirpath):
+        os.makedirs(dirpath)
+    filepath = dirpath+"/train_log.txt"
     with open(filepath, 'a+') as f:
+        f.write(str(message)+"\n")
+        f.close()
+
+
+def update_tf_log(message):
+    dirpath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), "data/logs/tf")
+    if not path.exists(dirpath):
+        os.makedirs(dirpath)
+    filepath = dirpath+"/train_log.txt"
+    with open(filepath, 'a+') as f:
+        f.write(str(message)+"\n")
+        f.close()
+
+
+def write_tf_log(message):
+    dirpath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), "data/logs/tf")
+    if not path.exists(dirpath):
+        os.makedirs(dirpath)
+    filepath = dirpath+"/train_log.txt"
+    with open(filepath, 'w+') as f:
+        f.write(str(message)+"\n")
+        f.close()
+
+
+def write_numpy_log(message):
+    dirpath = path.join(path.dirname(path.dirname(
+        path.abspath(__file__))), "data/logs/np")
+    if not path.exists(dirpath):
+        os.makedirs(dirpath)
+    filepath = dirpath+"/train_log.txt"
+    with open(filepath, 'w+') as f:
         f.write(str(message)+"\n")
         f.close()
 

@@ -1,6 +1,5 @@
-from app import diff, humans
+from app import humans, torp
 import thorpy
-import pygame
 
 
 def player():
@@ -8,10 +7,10 @@ def player():
 
 
 def computer():
-    diff.menu.play()
+    torp.menu.play()
 
 
-application = thorpy.Application((800, 600), "Players")
+application = thorpy.Application((640, 740), "Players")
 instr_text = "Play versus:"
 instr = thorpy.make_text(
     text=instr_text, font_size=50, font_color=(0, 255, 0))

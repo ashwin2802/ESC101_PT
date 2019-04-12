@@ -67,6 +67,7 @@ def main(lvl):
         if(lvl == 'Easy' or lvl == "Normal"):
             data.ball_pos(ball)
             data.pad_pos(computer, "right")
+            data.pad_pos(player1, "left")
         # pong.debug(player1.rect.topleft[1])
 
         if(lvl == 'Hard'):

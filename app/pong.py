@@ -5,14 +5,7 @@ import importlib
 #import app
 #from app import models
 
-
-def debug(var):
-    with open("debug.txt", "a") as f:
-        f.write(str(var))
-        f.write("\n")
-        f.close()
-    return
-
+#debug was shifted to data, fix all refs
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self):
@@ -178,7 +171,9 @@ class AI(Pad):
         if(diff == "Normal"):
             return "follower"
         # add the buttons
-        if(diff == "Train"):
-            return "train_model"
         if(diff == "Hard"):
             return "numpy_model"
+        if(diff == "Expert"):
+            return "tf_model"
+        if(diff == "Legendary"):
+            return "torch_model"

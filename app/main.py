@@ -10,7 +10,7 @@ def spacedown(event):
 def main():
     space = thorpy.Reaction(reacts_to=pygame.KEYDOWN,
                             reac_func=spacedown, event_args={"key": pygame.K_SPACE})
-    application = thorpy.Application((800, 600), "Pong")
+    application = thorpy.Application((640, 740), "Pong")
     title = thorpy.make_text(text="PONG", font_size=50, font_color=(255, 0, 0))
     instr_text = "Press Space to Continue"
     instr = thorpy.make_text(

@@ -1,10 +1,10 @@
 import pygame
-from models import train_model
-from app import data, pong
+from train_scripts import numpy_, tf_, torch_
+from app import data, pong, modtra
 #import thorpy
 
 
-def main():
+def main(model):
     pygame.init()
     screen = pygame.display.set_mode((640, 740))
     pygame.display.set_caption("Pong")
@@ -17,7 +17,7 @@ def main():
     global computer2
 
     computer1 = pong.AI("Normal", "left")
-    computer2 = pong.AI("Train", "right")
+    computer2 = pong.AI("Train "+str(model), "right")
     ball = pong.Ball()
     players = pygame.sprite.RenderPlain((computer1, computer2))
     balls = pygame.sprite.RenderPlain(ball)
@@ -69,10 +69,22 @@ def main():
             computer2.state = "still"
         data.write_score(computer1.score, "left")
         data.write_score(computer2.score, "right")
-        train_model.update()
+        if(model == "Numpy"):
+            numpy_.update()
+        if(model == "TF"):
+            tf_.update()
+        if(model == "Torch"):
+            torch_.update()
         # pong.debug(game_over)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                if(model == "Numpy"):
+                    numpy_.exit()
+                if(model == "TF"):
+                    tf_.exit()
+                if(model == "Torch"):
+                    torch_.exit()
+                data.remove_train()
                 return
         # pong.debug(computer1.score)
         # pong.debug(computer2.score)
@@ -86,7 +98,7 @@ def main():
             else:
                 data.score(2)
             data.num_games(games_played+1)
-            main()
+            main(model)
 
         ball.update(computer1, computer2)
         players.update()
@@ -96,4 +108,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(modtra.model)

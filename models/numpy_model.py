@@ -1,13 +1,13 @@
 import numpy as np
-try:
-    import cPickle as pickle
-except:
-    import pickle
+import pickle
 from app import data
 
-with open('weights/model.p', 'rb') as weights:
-    model = pickle.load(weights)
-    weights.close()
+# change paths to abs paths
+# pass se error message and go back
+try:
+    model = pickle.load(open('weights/np/model1.p', 'rb'))
+except:
+    pass
 prev_frame = None
 A = 80*80
 

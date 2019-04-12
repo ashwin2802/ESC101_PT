@@ -3,7 +3,6 @@ from PIL import Image
 import numpy as np
 try:
     import tensorflow as tf
-    import keras
 except:
     print("Tensorflow not found.")
 import pickle
@@ -11,6 +10,7 @@ import pickle
 num_pixels = 6400
 hidden_units = 200
 batch_size = 10
+resume = False
 
 
 def preproc(img):
@@ -20,15 +20,16 @@ def preproc(img):
     np_img[np_img != 0] = 1
     return np_img.astype(float).ravel()
 
+
 def create_network(num_pixels, hidden_units):
     pixels = tf.placeholder(dtype=tf.float32, shape=(None, num_pixels))
     actions = tf.placeholder(dtype=tf.float32, shape=(None, 1))
     rewards = tf.placeholder(dtype=tf.float32, shape=(None, 1))
 
     with tf.variable_scope('policy'):
-        hidden = keras.layers.dense(pixels, hidden_units, activation=tf.nn.relu,
+        hidden = tf.layers.dense(pixels, hidden_units, activation=tf.nn.relu,
                                  kernel_initializer=tf.contrib.layers.xavier_initializer())
-        logits = keras.layers.dense(
+        logits = tf.layers.dense(
             hidden, 1, activation=None, kernel_initializer=tf.contrib.layers.xavier_initializer())
         out = tf.sigmoid(logits, name="sigmoid")
         cross_entropy = tf.nn.sigmoid_cross_entropy_with_logits(
@@ -57,8 +58,10 @@ sess = tf.Session()
 saver = tf.train.Saver(max_to_keep=20, keep_checkpoint_every_n_hours=1)
 
 weights_dir = data.create_dir('weights/tf')
+log_dir = data.create_dir('data/logs/tf')
 checkpoint_dir = data.create_dir(log_dir + '/checkpoints')
-saver.restore(sess, tf.train.latest_checkpoint(checkpoint_dir))
+if resume:
+    saver.restore(sess, tf.train.latest_checkpoint(checkpoint_dir))
 prev_frame = None
 
 

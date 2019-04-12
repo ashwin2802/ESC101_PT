@@ -1,33 +1,35 @@
 # choose whether to train or play with the AI
 
 import thorpy
-from app import modtra, diff
+from app import trainer
 
 
-def train():
-    # executes next screen if user wants to train models
-    modtra.menu.play()
+def self_():
+    # executes trainer with one keyboard-controllable pad and one AI pad
+    agent_ = "Human"
+    trainer.main(agent_)
 
 
-def play():
-    # executes diffculty select screen if user wants to play with AI
-    diff.menu.play()
+def game():
+    # executes trainer with both AI pads
+    agent_ = "AI"
+    trainer.main(agent_)
 
 
 # create the application
 application = thorpy.Application((640, 740), "Pong")
 
 # create text element
-instr_text = "Train Models or Play?"
+instr_text = "Train Models with AI or with You?"
 instr = thorpy.make_text(
     text=instr_text, font_size=50, font_color=(0, 255, 0))
 
 # create buttons
-sel_train = thorpy.make_button("Train", func=train)
-sel_play = thorpy.make_button("Play", func=play)
+sel_self = thorpy.make_button("AI", func=game)
+sel_game = thorpy.make_button("Me", func=self_)
 
 # add elements to box
-elements = [instr, sel_train, sel_play]
+elements = [instr, sel_self, sel_game]
 box = thorpy.Box.make(elements)
 box.fit_children((30, 30))
 box.center()

@@ -1,3 +1,5 @@
+# wrapper script, calls the main application screen
+
 from app import main
-# increase render rate, its glitching
+
 main.main()

@@ -1,25 +1,38 @@
+# screen for selecting number of players
+
 from app import humans, torp
 import thorpy
 
 
 def player():
+    # executes the 2 player interface when the button is pressed
     humans.main()
 
 
 def computer():
+    # executes next screen when the button is pressed
     torp.menu.play()
 
 
-application = thorpy.Application((640, 740), "Players")
+# create application
+application = thorpy.Application((640, 740), "Pong")
+
+# create text elements
 instr_text = "Play versus:"
 instr = thorpy.make_text(
     text=instr_text, font_size=50, font_color=(0, 255, 0))
+
+# create buttons
 human = thorpy.make_button("Human", func=player)
 comp = thorpy.make_button("Computer", func=computer)
+
+# make a box and add all elements
 elements = [instr, human, comp]
 box = thorpy.Box.make(elements)
 box.fit_children((30, 30))
 box.center()
 box.set_main_color((220, 220, 220, 180))
+
+# add box to the background
 background = thorpy.Background.make(color=(0, 0, 0), elements=[box])
 menu = thorpy.Menu(background)

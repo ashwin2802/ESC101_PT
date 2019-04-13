@@ -19,11 +19,13 @@ def main():
 
     # create a reaction that calls the function when space is pressed
     space = thorpy.Reaction(reacts_to=pygame.KEYDOWN,
-                            reac_func=spacedown, event_args={"key": pygame.K_SPACE})
+                            reac_func=spacedown,
+                            event_args={"key": pygame.K_SPACE})
 
     # escape quits the game
     esc = thorpy.Reaction(reacts_to=pygame.KEYDOWN,
-                          reac_func=escape, event_args={"key": pygame.K_ESCAPE})
+                          reac_func=escape,
+                          event_args={"key": pygame.K_ESCAPE})
 
     # initialize the window
     application = thorpy.Application((640, 740), "Pong")

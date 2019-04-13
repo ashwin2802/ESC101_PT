@@ -127,7 +127,7 @@ def main(lvl):
         for event in pygame.event.get():
             # exit on quit event
             if event.type == pygame.QUIT:
-                return
+                buttons(screen)
 
             # handle key events for user pad
             # key is pressed

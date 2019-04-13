@@ -2,7 +2,33 @@
 
 import pygame
 from train_scripts import numpy_, tf_, torch_
-from app import data, pong, agent
+from app import data, pong, agent, torp
+import thorpy
+
+
+def buttons(screen):
+    # display for when the game gets over
+    again = thorpy.make_button("Play Again", func=more)
+    leave = thorpy.make_button("Exit", func=thorpy.functions.quit_func)
+
+    # set screen attributes so that buttons display on same screen
+    again.surface = screen
+    leave.surface = screen
+
+    # make a box containing the buttons
+    box = thorpy.Box.make([again, leave])
+    box.fit_children((30, 30))
+    box.center()
+    # black box
+    box.set_main_color((0, 0, 0, 0))
+
+    # add the box to the screen
+    menu = thorpy.Menu(box)
+    menu.play()
+
+
+def more():
+    torp.menu.play()
 
 
 def main(exec_):
@@ -141,7 +167,7 @@ def main(exec_):
                 if(model == "Torch"):
                     torch_.exit()
                 data.remove_train()
-                return
+                buttons
 
             # if event.type == PREDICT_EVENT:
             # if left pad is keyboard-controlled, handle key events
@@ -180,7 +206,7 @@ def main(exec_):
 
             # call interface again. start a new game
             main(exec_)
-        
+
             # call the updates
         ball.update(computer1, computer2)
         players.update()

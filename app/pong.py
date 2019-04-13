@@ -196,19 +196,19 @@ class AI(Pad):
 
     def model_select(self, diff):
         # map model names and difficulties
-        if(diff == "Effortless"):
+        if(diff == "Very Easy"):
             return "rand"
         if(diff == "Easy"):
-            return "glitchy"
+            return "numpy_model"
         if(diff == "Normal"):
-            return "follower"
+            return "tf_model"
         # add the buttons
         if(diff == "Hard"):
-            return "numpy_model"
+            return "glitchy"
         if(diff == "Expert"):
-            return "tf_model"
-        if(diff == "Legendary"):
-            return "torch_model"
+            return "follower"
+        # if(diff == "Legendary"):
+        #     return ""
 
     def train_select(self, diff):
         # map trainers and model names

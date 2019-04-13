@@ -87,8 +87,7 @@ def main():
 
             # exit on quit event
             if event.type == pygame.QUIT:
-                # do something?
-                return
+                buttons(screen)
 
             # key is pressed
             elif event.type == pygame.KEYDOWN:
@@ -144,7 +143,7 @@ def main():
             screen.blit(win_text, winpos)
 
             # show the continue and exit buttons
-            buttons(screen)
+            more()
 
         # display live score for left pad
         scoreprint = "P1: " + str(player1.score)
@@ -155,7 +154,7 @@ def main():
         # display live score for right pad
         scoreprint = "P2: " + str(player2.score)
         text = font.render(scoreprint, 1, (255, 255, 255))
-        textpos = (300, 40)
+        textpos = (460, 40)
         screen.blit(text, textpos)
 
         # separate scoreboard and game area

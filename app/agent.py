@@ -20,13 +20,13 @@ def game():
 application = thorpy.Application((640, 740), "Pong")
 
 # create text element
-instr_text = "Train Models with AI or with You?"
+instr_text = "Train Models with AI or with Player?\n"
 instr = thorpy.make_text(
-    text=instr_text, font_size=50, font_color=(0, 255, 0))
+    text=instr_text, font_size=30, font_color=(0, 255, 0))
 
 # create buttons
 sel_self = thorpy.make_button("AI", func=game)
-sel_game = thorpy.make_button("Me", func=self_)
+sel_game = thorpy.make_button("Player", func=self_)
 
 # add elements to box
 elements = [instr, sel_self, sel_game]

@@ -1,0 +1,6 @@
+model_checkpoint_path: "/Users/ashwin/Work/Sem_2/ESC101_PT/weights/tf/checkpoints/pg_5.ckpt"
+all_model_checkpoint_paths: "/Users/ashwin/Work/Sem_2/ESC101_PT/weights/tf/checkpoints/pg_1.ckpt"
+all_model_checkpoint_paths: "/Users/ashwin/Work/Sem_2/ESC101_PT/weights/tf/checkpoints/pg_2.ckpt"
+all_model_checkpoint_paths: "/Users/ashwin/Work/Sem_2/ESC101_PT/weights/tf/checkpoints/pg_3.ckpt"
+all_model_checkpoint_paths: "/Users/ashwin/Work/Sem_2/ESC101_PT/weights/tf/checkpoints/pg_4.ckpt"
+all_model_checkpoint_paths: "/Users/ashwin/Work/Sem_2/ESC101_PT/weights/tf/checkpoints/pg_5.ckpt"

@@ -7,7 +7,7 @@ from app import comp
 
 
 def lvl1():
-    sel_diff = "Effortless"
+    sel_diff = "Very Easy"
     comp.main(sel_diff)
 
 
@@ -31,29 +31,29 @@ def lvl5():
     comp.main(sel_diff)
 
 
-def lvl6():
-    sel_diff = "Legendary"
-    comp.main(sel_diff)
+# def lvl6():
+#     sel_diff = "Legendary"
+#     comp.main(sel_diff)
 
 
 # create application
 application = thorpy.Application((640, 740), "Pong")
 
 # create text element
-instr_text = "Select Difficulty"
+instr_text = "Select Difficulty\n"
 instr = thorpy.make_text(
     text=instr_text, font_size=50, font_color=(0, 255, 0))
 
 # create button elements
-level_1 = thorpy.make_button("Effortless", func=lvl1)
+level_1 = thorpy.make_button("Very Easy", func=lvl1)
 level_2 = thorpy.make_button("Easy", func=lvl2)
 level_3 = thorpy.make_button("Normal", func=lvl3)
 level_4 = thorpy.make_button("Hard", func=lvl4)
 level_5 = thorpy.make_button("Expert", func=lvl5)
-level_6 = thorpy.make_button("Legendary", func=lvl6)
+# level_6 = thorpy.make_button("Legendary", func=lvl6)
 
 # add elements to box
-elements = [instr, level_1, level_2, level_3, level_4, level_5, level_6]
+elements = [instr, level_1, level_2, level_3, level_4, level_5]
 box = thorpy.Box.make(elements)
 box.fit_children((30, 30))
 box.center()

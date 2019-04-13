@@ -18,7 +18,7 @@ def play():
 application = thorpy.Application((640, 740), "Pong")
 
 # create text element
-instr_text = "Train Models or Play?"
+instr_text = "Train Models or Play?\n"
 instr = thorpy.make_text(
     text=instr_text, font_size=50, font_color=(0, 255, 0))
 

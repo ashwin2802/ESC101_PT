@@ -35,8 +35,4 @@ box.set_main_color((220, 220, 220, 180))
 
 # add box to the background
 background = thorpy.Background.make(color=(0, 0, 0), elements=[box])
-
-# add escape function
-background.add_reaction(esc)
-
 menu = thorpy.Menu(background)

@@ -1,5 +1,6 @@
+# A model that just moves randomly
+
 import random
-#from app import pong
 
 
 def make_prediction():

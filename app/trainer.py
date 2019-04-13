@@ -52,6 +52,8 @@ def main(exec_):
 
     # set the clock
     clock = pygame.time.Clock()
+    # PREDICT_EVENT = pygame.USEREVENT+3
+    # pygame.time.set_timer(PREDICT_EVENT, 60)
 
     # game isn't over
     game_over = False
@@ -59,7 +61,7 @@ def main(exec_):
     # control loop
     while 1:
         # set frame rate
-        clock.tick(60)
+        clock.tick()
 
         # set black screen
         screen.fill((0, 0, 0))
@@ -89,20 +91,20 @@ def main(exec_):
 
         # take screenshot of game area
         data.scrot(screen)
-
         # save ball and pad positions
         data.ball_pos(ball)
         data.pad_pos(computer1, "left")
         data.pad_pos(computer2, "right")
-
+        # call the updates
+        # store score
+        data.write_score(computer1.score, "left")
+        data.write_score(computer2.score, "right")
         # if left pad is AI, get prediction
         if(exec_ == "AI"):
             action1 = computer1.predict()
-
         # get prediction from right pad
         action2 = computer2.predict()
-
-        # if left pad is AI, move based on prediction
+        data.debug(action2)
         if(exec_ == "AI"):
             if action1 == -1:
                 computer1.movedown()
@@ -111,8 +113,6 @@ def main(exec_):
             elif action1 == 0:
                 computer1.movepos = [0, 0]
                 computer1.state = "still"
-
-        # move right pad based on prediction
         if action2 == -1:
             computer2.movedown()
         elif action2 == 1:
@@ -120,10 +120,6 @@ def main(exec_):
         elif action2 == 0:
             computer2.movepos = [0, 0]
             computer2.state = "still"
-
-        # store score
-        data.write_score(computer1.score, "left")
-        data.write_score(computer2.score, "right")
 
         # update the model
         if(model == "Numpy"):
@@ -135,6 +131,7 @@ def main(exec_):
 
         # event loop
         for event in pygame.event.get():
+
             # save and clean on quit
             if event.type == pygame.QUIT:
                 if(model == "Numpy"):
@@ -146,6 +143,7 @@ def main(exec_):
                 data.remove_train()
                 return
 
+            # if event.type == PREDICT_EVENT:
             # if left pad is keyboard-controlled, handle key events
             if(exec_ == "Human"):
                 # key is pressed
@@ -182,8 +180,8 @@ def main(exec_):
 
             # call interface again. start a new game
             main(exec_)
-
-        # call the updates
+        
+            # call the updates
         ball.update(computer1, computer2)
         players.update()
 

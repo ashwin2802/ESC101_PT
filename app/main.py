@@ -7,8 +7,12 @@ import pygame
 
 def spacedown(event):
     # executes the next screen when space is pressed
-    # players.menu.play()
     players.menu.play()
+
+
+def escape(event):
+    # quit
+    exit()
 
 
 def main():
@@ -17,6 +21,10 @@ def main():
     space = thorpy.Reaction(reacts_to=pygame.KEYDOWN,
                             reac_func=spacedown, event_args={"key": pygame.K_SPACE})
 
+    # escape quits the game
+    esc = thorpy.Reaction(reacts_to=pygame.KEYDOWN,
+                          reac_func=escape, event_args={"key": pygame.K_ESCAPE})
+
     # initialize the window
     application = thorpy.Application((640, 740), "Pong")
 
@@ -24,7 +32,7 @@ def main():
     title = thorpy.make_text(text="PONG", font_size=50, font_color=(255, 0, 0))
     instr_text = "Press Space to Play"
     instr = thorpy.make_text(
-        text=instr_text, font_size=30, font_color=(0, 255, 0))
+        text=instr_text, font_size=30, font_color=(50, 100, 50))
     elements = [title, instr]
 
     # make a box to add the elements

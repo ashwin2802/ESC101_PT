@@ -38,7 +38,6 @@ if resume:
 
     # update log
     data.update_numpy_log("Starting from previous checkpoint.\n")
-
 else:
 
     # create new model
@@ -55,24 +54,13 @@ else:
 gradient_buf = {x: np.zeros_like(v) for x, v in model.items()}
 RMSProp_mem = {y: np.zeros_like(w) for y, w in model.items()}
 
-# storage variables for each episode
-prev_frame = None           # previous frame
-inps = []                   # episode inputs
-layers = []                 # convoluted inputs
-dlog_probs = []             # episode log probabilities
-drs = []                    # episode rewards
-
-run_reward = None           # running reward
-reward_target = 5.0         # to stop training
-sum_reward = 0              # total reward
-ep_num = 0                  # episode number
-
 
 # returns sigmoid of x
 
 
 def sigmoid(x):
     return 1.0/(1.0 + np.exp(-x))
+
 
 # preprocess image and convert to frame
 
@@ -169,6 +157,19 @@ def done():
     else:
         return 0
 
+
+# storage variables for each episode
+prev_frame = None           # previous frame
+inps = []                   # episode inputs
+layers = []                 # convoluted inputs
+dlog_probs = []             # episode log probabilities
+drs = []                    # episode rewards
+
+run_reward = None           # running reward
+reward_target = 5.0         # to stop training
+sum_reward = 0              # total reward
+ep_num = 0                  # episode number
+
 # give prediction to interface
 
 
@@ -199,7 +200,6 @@ def get_prediction(side):
     return action
 
 # update the network
-
 
 def update():
     global sum_reward, drs, inps, layers, dlog_probs, ep_num

@@ -18,46 +18,6 @@ num_pixels = 6400
 hidden_units = 200
 batch_size = 10
 
-# reset the graph
-tf.reset_default_graph()
-
-# create the network
-pix_, action_, reward_, out_, opt_, merge_ = create_network(
-    num_pixels, hidden_units)
-
-# start a new session
-sess = tf.Session()
-
-# create saver object to save model at regular intervals
-saver = tf.train.Saver(max_to_keep=20, keep_checkpoint_every_n_hours=1)
-
-# create a writer object that stores logs
-writer = tf.summary.FileWriter(log_dir+'/train', sess.graph)
-
-# define directories to store logs and checkpoints
-weights_dir = data.create_dir('weights/tf')
-log_dir = data.create_dir('data/logs/tf')
-checkpoint_dir = data.create_dir(weights_dir + '/checkpoints')
-
-# restore last checkpoint if training is to be resumed
-if resume:
-    data.write_tf_log("Resuming from latest saved checkpoint.\n")
-    saver.restore(sess, tf.train.latest_checkpoint(checkpoint_dir))
-else:
-    # start a new session
-    data.write_tf_log("Training from scratch.\n")
-    sess.run(tf.global_variables_initializer())
-
-# storage variables
-prev_frame = None       # previous frame
-xs = []                 # diff frames
-ys = []                 # actions
-ep_ws = []              # episode rewards
-batch_ws = []           # batch rewards
-step = pickle.load(open(weights_dir+'/step.p', 'rb')
-                   ) if resume and path.exists(weights_dir+'/step.p') else 0   # batch number
-ep_num = step*10        # episode number
-mean_reward = -21.0     # running reward
 
 # preprocess image and convert to frame
 
@@ -142,6 +102,50 @@ def create_network(num_pixels, hidden_units):
 
     # output network
     return pixels, actions, rewards, out, optim, merged
+
+
+# reset the graph
+tf.reset_default_graph()
+
+# define directories to store logs and checkpoints
+weights_dir = data.create_dir('weights/tf')
+log_dir = data.create_dir('data/logs/tf')
+checkpoint_dir = data.create_dir(weights_dir + '/checkpoints')
+
+# create the network
+pix_, action_, reward_, out_, opt_, merge_ = create_network(
+    num_pixels, hidden_units)
+
+# start a new session
+sess = tf.Session()
+
+# create saver object to save model at regular intervals
+saver = tf.train.Saver(max_to_keep=20, keep_checkpoint_every_n_hours=1)
+
+# create a writer object that stores logs
+writer = tf.summary.FileWriter(log_dir+'/train', sess.graph)
+
+
+# restore last checkpoint if training is to be resumed
+if resume:
+    data.write_tf_log("Resuming from latest saved checkpoint.\n")
+    saver.restore(sess, tf.train.latest_checkpoint(checkpoint_dir))
+else:
+    # start a new session
+    data.write_tf_log("Training from scratch.\n")
+    sess.run(tf.global_variables_initializer())
+
+# storage variables
+prev_frame = None       # previous frame
+xs = []                 # diff frames
+ys = []                 # actions
+ep_ws = []              # episode rewards
+batch_ws = []           # batch rewards
+step = pickle.load(open(weights_dir+'/step.p', 'rb')
+                   ) if resume and path.exists(weights_dir+'/step.p') else 0   # batch number
+ep_num = step*10        # episode number
+mean_reward = -21.0     # running reward
+
 
 # give prediction to interface
 

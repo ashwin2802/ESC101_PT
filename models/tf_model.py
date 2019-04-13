@@ -17,31 +17,6 @@ batch_size = 10
 # set this to True for loading pre-trained model
 resume = False
 
-# reset the graph
-tf.reset_default_graph()
-
-# create the network
-pix_, action_, reward_, out_, opt_, merge_ = create_network(
-    num_pixels, hidden_units)
-
-# start a new session
-sess = tf.Session()
-
-# create saver object to save model at regular intervals
-saver = tf.train.Saver(max_to_keep=20, keep_checkpoint_every_n_hours=1)
-
-# define directories to store logs and checkpoints
-weights_dir = data.create_dir('weights/tf')
-log_dir = data.create_dir('data/logs/tf')
-checkpoint_dir = data.create_dir(weights_dir + '/checkpoints')
-
-# restore last checkpoint to load the model
-if resume:
-    saver.restore(sess, tf.train.latest_checkpoint(checkpoint_dir))
-
-# set variable to store previous frame
-prev_frame = None
-
 # preprocess image and convert to frame
 
 
@@ -111,6 +86,32 @@ def create_network(num_pixels, hidden_units):
 
     # output network
     return pixels, actions, rewards, out, optim, merged
+
+
+# reset the graph
+tf.reset_default_graph()
+
+# create the network
+pix_, action_, reward_, out_, opt_, merge_ = create_network(
+    num_pixels, hidden_units)
+
+# start a new session
+sess = tf.Session()
+
+# create saver object to save model at regular intervals
+saver = tf.train.Saver(max_to_keep=20, keep_checkpoint_every_n_hours=1)
+
+# define directories to store logs and checkpoints
+weights_dir = data.create_dir('weights/tf')
+log_dir = data.create_dir('data/logs/tf')
+checkpoint_dir = data.create_dir(weights_dir + '/checkpoints')
+
+# restore last checkpoint to load the model
+if resume:
+    saver.restore(sess, tf.train.latest_checkpoint(checkpoint_dir))
+
+# set variable to store previous frame
+prev_frame = None
 
 # calculate action
 

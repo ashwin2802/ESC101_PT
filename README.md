@@ -4,13 +4,13 @@ This repository contains all the code and other resources created as a project f
 
 # Dependencies
 
-Pygame
-Thorpy
-Numpy
-Tensorflow
-Pillow (PIL)
-Pickle
-importlib, random, math, os, sys, shutil.
+- Pygame
+- Thorpy
+- Numpy
+- Tensorflow
+- Pillow (PIL)
+- Pickle
+- importlib, random, math, os, sys, shutil.
 
 # Execution
 
